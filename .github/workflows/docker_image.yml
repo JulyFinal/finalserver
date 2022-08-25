@@ -39,4 +39,4 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+          tags: julyfinal/${{ env.IMAGE_NAME }}:latest
