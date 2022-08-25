@@ -39,4 +39,4 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: julyfinal/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/julyfinal/${{ env.IMAGE_NAME }}:latest

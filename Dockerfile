@@ -9,11 +9,8 @@ ENV LANG en_US.UTF-8
 RUN sed -ie 's/^#\(en_US\.UTF-8 UTF-8\)/\1/' /etc/locale.gen \
   && locale-gen
 
-RUN echo "Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch\n\
-Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch\n\
-Server = https://mirror.archlinux.tw/ArchLinux/$repo/os/$arch\n\
-Server = https://mirror.aktkn.sg/archlinux/$repo/os/$arch\n\
-Server = https://mirrors.cat.net/archlinux/$repo/os/$arch" >> /etc/pacman.d/mirrorlist
+RUN echo "Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch" >> /etc/pacman.d/mirrorlist \
+  && echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch" >> /etc/pacman.d/mirrorlist
 
 RUN pacman -Syu --noconfirm --needed base-devel zsh git lazygit vim neovim go sudo python python-pip bat fd bottom lsd ripgrep sd zoxide openssh \
   && pacman -Sc --noconfirm \
