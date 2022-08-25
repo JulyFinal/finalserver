@@ -44,3 +44,4 @@ RUN git clone https://github.com/JulyFinal/.config.git ~/.config \
 
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
+CMD ["usr/bin/zsh"]
