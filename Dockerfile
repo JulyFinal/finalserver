@@ -30,7 +30,7 @@ RUN useradd -d /home/final -m -s /bin/zsh final \
   && echo "final:4188" | chpasswd \
   && echo 'final ALL=(ALL) ALL' >> /etc/sudoers
 
-CMD ["/usr/bin/sshd", "-D"]
+# CMD ["/usr/bin/sshd", "-D"]
 
 EXPOSE 22
 
@@ -40,7 +40,10 @@ USER final
 RUN git clone https://github.com/JulyFinal/.config.git ~/.config \
   && git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 \
   && git clone https://github.com/JulyFinal/nvim_custom.git ~/.config/nvim/lua/custom \
-  && echo "source ~/.config/zshrc"
+  &&  mkdir -p ~/.local/share/zinit/zinit.git \
+  && git clone https://github.com/zdharma-continuum/zinit.git ~/.local/share/zinit/zinit.git \
+  && echo "source ~/.config/zshrc" > ~/.zshrc \
+  && exec zsh
 
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
