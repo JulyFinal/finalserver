@@ -1,0 +1,39 @@
+FROM opensuse/tumbleweed
+
+LABEL maintainer="final" email="julyfinal@outlook.com"
+
+ENV LANG en_US.UTF-8
+# ENV LANGUAGE=en_US.UTF-8
+# ENV LC_ALL=en_US.UTF-8
+
+RUN sed -ie 's/^#\(en_US\.UTF-8 UTF-8\)/\1/' /etc/locale.gen \
+  && locale-gen
+
+RUN pacman -Syu --noconfirm --needed zsh git vim neovim go sudo python3 python3-pip bat fd bottom lsd ripgrep sd zoxide openssh \
+  && pacman -Sc --noconfirm \
+  && /usr/bin/ssh-keygen -A \
+  && sed -i "s/#*UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
+  && sed -i "s/#*UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config \
+  && sed -i "s/#*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+
+RUN useradd -d /home/final -m -s /bin/zsh final \
+  && echo "final:4188" | chpasswd \
+  && echo 'final ALL=(ALL) ALL' >> /etc/sudoers
+
+
+# USER final
+# RUN git clone https://aur.archlinux.org/yay ~/yay && cd ~/yay && echo "4188" | makepkg -si && rm -rf ~/yay
+
+RUN git clone https://github.com/JulyFinal/.config.git ~/.config \
+  && git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 \
+  && git clone https://github.com/JulyFinal/nvim_custom.git ~/.config/nvim/lua/custom \
+  &&  mkdir -p ~/.local/share/zinit/zinit.git \
+  && git clone https://github.com/zdharma-continuum/zinit.git ~/.local/share/zinit/zinit.git \
+  && echo "source ~/.config/zshrc" > ~/.zshrc \
+  && exec zsh
+
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+EXPOSE 22
+
+CMD	 ["/usr/sbin/sshd", "-D"]
