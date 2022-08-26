@@ -23,9 +23,6 @@ RUN useradd -d /home/final -m -s /bin/zsh final \
   && echo "final:4188" | chpasswd \
   && echo 'final ALL=(ALL) ALL' >> /etc/sudoers
 
-EXPOSE 22
-
-CMD	 ["/usr/sbin/sshd", "-D"]
 
 # USER final
 # RUN git clone https://aur.archlinux.org/yay ~/yay && cd ~/yay && echo "4188" | makepkg -si && rm -rf ~/yay
@@ -39,5 +36,9 @@ RUN git clone https://github.com/JulyFinal/.config.git ~/.config \
   && exec zsh
 
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+EXPOSE 22
+
+CMD	 ["/usr/sbin/sshd", "-D"]
 
 CMD ["usr/bin/zsh"]
